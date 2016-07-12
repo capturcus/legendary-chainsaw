@@ -1,10 +1,13 @@
 /*global cordova, module*/
 
 module.exports = {
-    greet: function (name, successCallback, errorCallback) {
-        cordova.exec(successCallback, errorCallback, "CordovaBt", "greet", [name]);
+    init: function (successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "CordovaBt", "init", []);
     },
-    servicetest: function(successCallback, errorCallback) {
-    	cordova.exec(successCallback, errorCallback, "CordovaBt", "servicetest", []);
+    startDiscovery: function(successCallback, errorCallback) {
+    	cordova.exec(successCallback, errorCallback, "CordovaBt", "startDiscovery", []);
+    },
+    advertiseUuid: function(uuid, successCallback, errorCallback) {
+    	cordova.exec(successCallback, errorCallback, "CordovaBt", "advertiseUuid", [uuid])
     }
 };

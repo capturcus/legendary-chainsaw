@@ -29,7 +29,7 @@ public class CordovaBt extends CordovaPlugin {
 
 	private boolean mBound = false;
 	LocalService mService;
-	CallbackContext mCallbackContext;
+	CallbackContext initCallbackContext;
 
 	/** Defines callbacks for service binding, passed to bindService() */
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -42,7 +42,10 @@ public class CordovaBt extends CordovaPlugin {
             LocalService.LocalBinder binder = (LocalService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
-            mService.startBt(cordova.getActivity(), mCallbackContext);
+            //mService.startBt(cordova.getActivity(), mCallbackContext);
+            PluginResult result = new PluginResult(PluginResult.Status.OK, "");
+            result.setKeepCallback(false);
+            initCallbackContext.sendPluginResult(result);
         }
 
         @Override
@@ -54,24 +57,16 @@ public class CordovaBt extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
-
-        if (action.equals("greet")) {
-            String name = data.getString(0);
-            String message = "Hello, " + name;
-            for (int i = 0; i < 10; i++) {
-                PluginResult result = new PluginResult(PluginResult.Status.OK, "no siema "+String.valueOf(i));
-                result.setKeepCallback(true);
-                callbackContext.sendPluginResult(result);
-            }
-            return true;
-        } else if (action.equals("servicetest")) {
-        	Intent intent = new Intent(cordova.getActivity(), LocalService.class);
+        if (action.equals("init")) {
+            Intent intent = new Intent(cordova.getActivity(), LocalService.class);
         	cordova.getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-        	Log.e("mleko","called servicetest");
-        	mCallbackContext = callbackContext;
-        	PluginResult result = new PluginResult(PluginResult.Status.OK, "bindservice test");
-            result.setKeepCallback(true);
-            callbackContext.sendPluginResult(result);
+        	initCallbackContext = callbackContext;
+            return true;
+        } else if (action.equals("startDiscovery")) {
+        	mService.startDiscovery(cordova.getActivity(), callbackContext);
+        	return true;
+        } else if (action.equals("advertiseUuid")) {
+        	mService.startAdvertising(data.getString(0), callbackContext);
         	return true;
         } else {
             return false;
