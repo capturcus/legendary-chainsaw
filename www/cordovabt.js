@@ -2,7 +2,7 @@
 
 module.exports = {
     init: function (successCallback, errorCallback) {
-        cordova.exec(successCallback, errorCallback, "CordovaBt", "init", []);
+        cordova.exec(successCallback, errorCallback, "CordovaBt", "initBt", []);
     },
     startDiscovery: function(successCallback, errorCallback) {
     	cordova.exec(successCallback, errorCallback, "CordovaBt", "startDiscovery", []);

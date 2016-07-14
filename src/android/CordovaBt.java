@@ -57,7 +57,7 @@ public class CordovaBt extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("init")) {
+        if (action.equals("initBt")) {
             Intent intent = new Intent(cordova.getActivity(), LocalService.class);
         	cordova.getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         	initCallbackContext = callbackContext;
